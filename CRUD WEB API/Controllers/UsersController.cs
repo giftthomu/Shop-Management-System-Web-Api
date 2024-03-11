@@ -18,9 +18,23 @@ namespace CRUD_WEB_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        [HttpGet("{Id}")]
+        
+        public async Task<ActionResult<Users>> GetUser(int Id)
+        {
+            var user = await _context.Users.FindAsync(Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
         }
        
     }
