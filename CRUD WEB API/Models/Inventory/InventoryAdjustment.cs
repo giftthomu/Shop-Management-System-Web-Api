@@ -7,5 +7,7 @@
         public int QuantityAdjustment { get; set; }
         public string Reason { get; set; }
         public DateTime AdjustmentDate { get; set; }
+
+        public Product Product { get; set; }
     }
 }
