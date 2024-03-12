@@ -1,5 +1,5 @@
 ﻿using CRUD_WEB_API.Data;
-using CRUD_WEB_API.Models;
+using CRUD_WEB_API.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-﻿using CRUD_WEB_API.Models;
+﻿using CRUD_WEB_API.Models.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_WEB_API.Data
