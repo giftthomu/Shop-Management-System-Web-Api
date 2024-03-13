@@ -1,98 +1,111 @@
-﻿using CRUD_WEB_API.Data;
-using CRUD_WEB_API.Models.Users;
+﻿using Shop_Management_WEB_API.Data;
+using Shop_Management_WEB_API.DTOs.Users;
+using Shop_Management_WEB_API.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Shop_Management_WEB_API.DTOs.Inventory;
+using Shop_Management_WEB_API.Models.Inventory;
 
-namespace CRUD_WEB_API.Controllers
+
+namespace Shop_Management_WEB_API.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly CrudWebApiContext _context;
+        private readonly ShopWebApiContext _context;
+        private readonly IMapper _mapper;
 
-       
-        public UsersController(CrudWebApiContext context)
+        public UsersController(ShopWebApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            var userDtos =  _mapper.Map<List<UserDto>>(users);
+            return userDtos;
         }
 
-        [HttpGet("{Id}")]
-        
-        public async Task<ActionResult<Users>> GetUser(int Id)
-        {
-            var user = await _context.Users.FindAsync(Id);
+        //[HttpGet("{Id}")]
+        //public async Task<ActionResult<UserDto>> GetUser(int Id)
+        //{
+        //    var user = await _context.Users.FindAsync(Id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return user;
-        }
+        //    ;
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult<Users>> PostUser(Users user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        //[HttpPost]
+        //public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
+        //{
+        //    var user = ConvertToModel(userDto);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-        }
+        //    _context.Users.Add(user);
+        //    await _context.SaveChangesAsync();
 
-        [HttpDelete("{Id}")]
-        public async Task<ActionResult<Users>> DeleteUser(int Id)
-        {
-            var user = await _context.Users.FindAsync(Id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+        //    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, ConvertToDto(user));
+        //}
 
-            return NoContent(); 
+        //[HttpDelete("{Id}")]
+        //public async Task<ActionResult<UserDto>> DeleteUser(int Id)
+        //{
+        //    var user = await _context.Users.FindAsync(Id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _context.Users.Remove(user);
+        //    await _context.SaveChangesAsync();
 
-        }
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, Users user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
+        //    return NoContent();
+        //}
 
-            _context.Entry(user).State = EntityState.Modified;
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutUser(int id, UserDto userDto)
+        //{
+        //    if (id != userDto.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    var user = ConvertToModel(userDto);
 
-            return NoContent();
-        }
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+        //    _context.Entry(user).State = EntityState.Modified;
 
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!UserExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
+        //private bool UserExists(int id)
+        //{
+        //    return _context.Users.Any(e => e.Id == id);
+        //}
+
+       
     }
 }

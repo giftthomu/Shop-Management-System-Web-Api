@@ -1,12 +1,12 @@
-﻿using CRUD_WEB_API.Models.Inventory;
-using CRUD_WEB_API.Models.Users;
+﻿using Shop_Management_WEB_API.Models.Inventory;
+using Shop_Management_WEB_API.Models.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRUD_WEB_API.Data
+namespace Shop_Management_WEB_API.Data
 {
-    public class CrudWebApiContext:DbContext
+    public class ShopWebApiContext:DbContext
     {
-        public CrudWebApiContext(DbContextOptions<CrudWebApiContext> options) : base(options)
+        public ShopWebApiContext(DbContextOptions<ShopWebApiContext> options) : base(options)
         {
             
         }

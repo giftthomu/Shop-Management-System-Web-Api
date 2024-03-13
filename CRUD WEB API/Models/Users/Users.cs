@@ -1,4 +1,4 @@
-﻿namespace CRUD_WEB_API.Models.Users
+﻿namespace Shop_Management_WEB_API.Models.Users
 {
     public class Users
     {

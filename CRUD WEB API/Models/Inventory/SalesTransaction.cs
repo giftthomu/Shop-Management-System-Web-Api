@@ -1,4 +1,4 @@
-﻿namespace CRUD_WEB_API.Models.Inventory
+﻿namespace Shop_Management_WEB_API.Models.Inventory
 {
     public class SalesTransaction
     {
