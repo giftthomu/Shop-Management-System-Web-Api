@@ -5,7 +5,7 @@ namespace Shop_Management_WEB_API.DTOs.Users
     public class UserDto
     {
         [Required]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "First name is required")]
         [StringLength(50, ErrorMessage = "First name must be between 1 and 50 characters", MinimumLength = 1)]

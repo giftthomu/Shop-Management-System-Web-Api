@@ -1,8 +1,11 @@
-﻿namespace Shop_Management_WEB_API.Models.Users
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shop_Management_WEB_API.Models.Users
 {
     public class Users
     {
-        public int Id { get; set; }
+        [Key]
+        public int UserId { get; set; }
         public string firstname { get; set; }
 
         public string lastname { get; set; }

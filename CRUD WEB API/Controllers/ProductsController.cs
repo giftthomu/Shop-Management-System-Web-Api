@@ -35,6 +35,17 @@ namespace Shop_Management_WEB_API.Controllers
             return productDtos;
         }
 
+        [HttpGet("{ProductId}")]
+        public async Task<ActionResult<ProductDto>> GetProduct(int ProductId)
+        {
+           var product  = _context.Products.FindAsync(ProductId); 
+            if(product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+
      
     }
 }

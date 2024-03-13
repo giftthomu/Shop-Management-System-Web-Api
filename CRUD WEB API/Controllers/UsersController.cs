@@ -28,33 +28,50 @@ namespace Shop_Management_WEB_API.Controllers
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
             var users = await _context.Users.ToListAsync();
-            var userDtos =  _mapper.Map<List<UserDto>>(users);
+            var userDtos = _mapper.Map<List<UserDto>>(users);
             return userDtos;
         }
 
-        //[HttpGet("{Id}")]
-        //public async Task<ActionResult<UserDto>> GetUser(int Id)
-        //{
-        //    var user = await _context.Users.FindAsync(Id);
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<UserDto>> GetUser(int UserId)
+        {
+            var user = await _context.Users.FindAsync(UserId);
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(user);
+            }
+        }
 
-        //    ;
-        //}
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> AddUser(UserDto userDto)
+        {
+            try
+            {
 
-        //[HttpPost]
-        //public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
-        //{
-        //    var user = ConvertToModel(userDto);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-        //    _context.Users.Add(user);
-        //    await _context.SaveChangesAsync();
+                var userEntity = _mapper.Map<Users>(userDto); 
+                await _context.Users.AddAsync(userEntity);
+                await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, ConvertToDto(user));
-        //}
+                var addedUserDto = _mapper.Map<UserDto>(userEntity);
+
+                return CreatedAtAction(nameof(GetUser), new { Id = addedUserDto.UserId }, addedUserDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while adding the user.");
+            }
+        }
+    
 
         //[HttpDelete("{Id}")]
         //public async Task<ActionResult<UserDto>> DeleteUser(int Id)
@@ -106,6 +123,6 @@ namespace Shop_Management_WEB_API.Controllers
         //    return _context.Users.Any(e => e.Id == id);
         //}
 
-       
+
     }
 }
