@@ -5,7 +5,7 @@ using Shop_Management_WEB_API.DTOs.Users;
 using Shop_Management_WEB_API.Models.Inventory;
 using Shop_Management_WEB_API.Models.Users;
 
-namespace CRUD_WEB_API.Common
+namespace Shop_Management_WEB_API.Common
 {
     public class MappingProfile: Profile
     {

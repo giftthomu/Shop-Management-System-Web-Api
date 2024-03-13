@@ -4,7 +4,7 @@ namespace Shop_Management_WEB_API.DTOs.Inventory
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Product name must be between 3 and 50 characters.")]
