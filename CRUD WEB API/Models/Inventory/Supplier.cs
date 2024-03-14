@@ -2,9 +2,9 @@
 {
     public class Supplier
     {  
-        public int ID { get; set; }
+        public int SupplierId { get; set; }
         public string SupplierName { get; set; }
-        public string COntactPerson { get; set; }
+        public string ContactPerson { get; set; }
         public string Email {  get; set; }
         public string SupplierPhone { get; set;}
 
