@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Azure;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Shop_Management_WEB_API.DTOs.Users;
 
 
 
@@ -36,29 +37,98 @@ namespace Shop_Management_WEB_API.Controllers
             return productDtos;
         }
 
-
         [HttpGet("{ProductId}")]
+   
         public async Task<ActionResult<ProductDto>> GetProduct(int ProductId)
         {
-           var product  = _context.Products.FindAsync(ProductId); 
-            if(product == null)
+            try
             {
-                return NotFound();
+                var product = await _context.Products.FindAsync(ProductId);
+
+                if (product == null)
+                {
+                    var errorResponse = new
+                    {
+                        statusCode = 404,
+                        remarks = "Product not found",
+                        data = new
+                        {
+                            productId = ProductId
+                        },
+                        errors = ""
+                    };
+
+                    return NotFound(errorResponse);
+                }
+
+                var response = new
+                {
+                    statusCode = 200,
+                    remarks = "Success",
+                    data = new
+                    {
+                        productId = product.ProductId,
+                        productName = product.ProductName,
+                        productDescription = product.ProductDescription,
+                        price = product.Price,
+                        quantity = product.Quantity
+                    },
+                    errors = ""
+                };
+
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return StatusCode(500, ex);
             }
-            return Ok(product);
         }
+
+
 
         [HttpDelete("{ProductId}")]
         public async Task<ActionResult<ProductDto>> DeleteProduct(int ProductId)
         {
-            var product = _context.Products.FindAsync(ProductId);
-            if (product == null)
+            try
             {
-                return NotFound();
+                var product =await  _context.Products.FindAsync(ProductId);
+                if (product == null)
+                {
+
+                    var ErrorResponse = new
+                    {
+                        StatusCode = 404,
+                        Remarks = "Product Not Found",
+                        Data = new
+                        {
+                            ProductId = ProductId,
+                        },
+                        Errors = ""
+                    };
+                    return NotFound(ErrorResponse);
+
+                }
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+                var response = new
+                {
+                    StatusCode = 200,
+                    Remarks = $"ProductId {ProductId} deleted successfully",
+                    Data = new
+                    {
+                        ProductId = ProductId,
+                        productName = product.ProductName,
+                        productDescription = product.ProductDescription,
+                        price = product.Price,
+                        quantity = product.Quantity
+
+                    }
+
+                };
+                return Ok(response);
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex);
             }
-            _context.Products.Remove(await product);
-            await _context.SaveChangesAsync();
-            return Ok();
         }
 
 
