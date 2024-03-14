@@ -27,7 +27,6 @@ namespace Shop_Management_WEB_API.Controllers
         }
 
         
-
         [HttpGet]
         [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
@@ -36,6 +35,7 @@ namespace Shop_Management_WEB_API.Controllers
             var productDtos = _mapper.Map<List<ProductDto>>(products);
             return productDtos;
         }
+
 
         [HttpGet("{ProductId}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int ProductId)
@@ -47,6 +47,21 @@ namespace Shop_Management_WEB_API.Controllers
             }
             return Ok(product);
         }
+
+        [HttpDelete("{ProductId}")]
+        public async Task<ActionResult<ProductDto>> DeleteProduct(int ProductId)
+        {
+            var product = _context.Products.FindAsync(ProductId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            _context.Products.Remove(await product);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<ProductDto>> AddProducts(ProductDto productDto)
         {
@@ -92,7 +107,8 @@ namespace Shop_Management_WEB_API.Controllers
                     },
                     Errors = ex.Message
                 };
-                return StatusCode(500, errorResponse);
+
+               return StatusCode(500, errorResponse);
             }
             }
         }
