@@ -35,7 +35,7 @@ namespace Shop_Management_WEB_API.Controllers
 
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<UserDto>> GetUser(int UserId)
+        public async Task<ActionResult<UserDto>> GetUserId(int UserId)
         {
             var user = await _context.Users.FindAsync(UserId);
 
@@ -50,30 +50,66 @@ namespace Shop_Management_WEB_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> AddUser(UserDto userDto)
+        public async Task<ActionResult<UserDto>> AddNewUser(UserDto userDto)
         {
             try
             {
-
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                var userEntity = _mapper.Map<Users>(userDto); 
-                await _context.Users.AddAsync(userEntity);
+                var user = new Users
+                {
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
+                    Email = userDto.Email,
+                    UserType = userDto.UserType
+                };
+
+                _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
-                var addedUserDto = _mapper.Map<UserDto>(userEntity);
+                // Prepare the response
+                var response = new
+                {
+                    StatusCode = 200,
+                    Remark = "User added successfully",
+                    Data = new
+                    {
+                        FirstName = userDto.FirstName,
+                        LastName = userDto.LastName,
+                        Email = userDto.Email,
+                        UserType = userDto.UserType
+                    },
+                    Errors = ""
+                };
 
-                return CreatedAtAction(nameof(GetUser), new { Id = addedUserDto.UserId }, addedUserDto);
+                return Ok(response);
+
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding the user.");
+               
+                var errorResponse = new
+                {
+                    StatusCode = 500,
+                    Remark = "Internal Server Error",
+                    Data = new
+                    {
+                        FirstName = "",
+                        LastName = "",
+                        Email = "",
+                        UserType = ""
+                    },
+                    Errors = ex.Message 
+                };
+
+                return StatusCode(500, errorResponse);
             }
         }
-    
+
+
 
         [HttpDelete("{Id}")]
         public async Task<ActionResult<UserDto>> DeleteUser(int Id)
@@ -96,8 +132,6 @@ namespace Shop_Management_WEB_API.Controllers
             {
                 return BadRequest();
             }
-
-            
 
 
             try

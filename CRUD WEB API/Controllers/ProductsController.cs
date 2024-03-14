@@ -4,6 +4,8 @@ using Shop_Management_WEB_API.Models.Inventory;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Azure;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 
@@ -45,7 +47,55 @@ namespace Shop_Management_WEB_API.Controllers
             }
             return Ok(product);
         }
+        [HttpPost]
+        public async Task<ActionResult<ProductDto>> AddProducts(ProductDto productDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
 
+                var product = new Product
+                {
+                    ProductName = productDto.ProductName,
+                    ProductDescription = productDto.ProductDescription,
+                    Price = productDto.Price,
+                    Quantity = productDto.Quantity,
+                };
+
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+
+                var response = new
+                {
+                    StatusCode = 200,
+                    Remarks = "Product added successfully",
+                    Data = productDto,
+                    Errors = "",
+                };
+
+                return Ok(response);
+            } catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    StatusCode = 500,
+                    Remarks = "Internal Server Error",
+                    Data = new
+                    {
+                        ProductName = "",
+                        ProductDescription = "",
+                        Price = "",
+                        Quantity = "",
+                    },
+                    Errors = ex.Message
+                };
+                return StatusCode(500, errorResponse);
+            }
+            }
+        }
      
     }
-}
+
