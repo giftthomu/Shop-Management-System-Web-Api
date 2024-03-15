@@ -18,9 +18,6 @@ namespace Shop_Management_WEB_API.Common
             CreateMap<Supplier, SupplierDto>();
         }
 
-        internal ActionResult<IEnumerable<SupplierDto>> Map<T>(Supplier? suppliers)
-        {
-            throw new NotImplementedException();
-        }
+  
     }
 }

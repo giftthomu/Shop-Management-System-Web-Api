@@ -1,5 +1,7 @@
-﻿using CRUD_WEB_API.DTOs.Inventory;
+﻿using AutoMapper;
+using CRUD_WEB_API.DTOs.Inventory;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop_Management_WEB_API.Common;
 using Shop_Management_WEB_API.Data;
 
@@ -10,9 +12,9 @@ namespace CRUD_WEB_API.Controllers
     public class SupplierController : ControllerBase
     {
        private readonly ShopWebApiContext _context;
-        private readonly MappingProfile _mapper;
+        private readonly IMapper _mapper;
 
-        public SupplierController(ShopWebApiContext context, MappingProfile mapper)
+        public SupplierController(ShopWebApiContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -20,9 +22,17 @@ namespace CRUD_WEB_API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplierDto>>> GetAllSuppliers() {
-            var suppliers =await  _context.Suppliers.FindAsync();
-            var suppliersDto = _mapper.Map<List<SupplierDto>>(suppliers);
-            return suppliersDto;
+
+            try
+            {
+                var suppliers = await _context.Suppliers.ToListAsync();
+                var suppliersDto = _mapper.Map<List<SupplierDto>>(suppliers);
+                return suppliersDto;
+            } catch (Exception ex)
+            {
+               
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

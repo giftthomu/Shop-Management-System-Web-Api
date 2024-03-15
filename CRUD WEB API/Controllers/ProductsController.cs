@@ -32,9 +32,17 @@ namespace Shop_Management_WEB_API.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
         {
-            var products = await _context.Products.ToListAsync();
-            var productDtos = _mapper.Map<List<ProductDto>>(products);
-            return productDtos;
+            try
+            {
+                var products = await _context.Products.ToListAsync();
+                var productDtos = _mapper.Map<List<ProductDto>>(products);
+                return productDtos;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+          
         }
 
         [HttpGet("{ProductId}")]

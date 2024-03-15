@@ -28,9 +28,17 @@ namespace Shop_Management_WEB_API.Controllers
         [ProducesResponseType(405)] 
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
-            var users = await _context.Users.ToListAsync();
-            var userDtos = _mapper.Map<List<UserDto>>(users);
-            return userDtos;
+            try
+            {
+                var users = await _context.Users.ToListAsync();
+                var userDtos = _mapper.Map<List<UserDto>>(users);
+                return userDtos;
+            }
+            catch(Exception ex)
+            {
+                  return StatusCode(500, ex.Message);   
+            }
+          
         }
 
 
