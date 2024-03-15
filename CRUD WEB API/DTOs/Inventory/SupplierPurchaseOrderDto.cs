@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shop_Management_WEB_API.Models.Inventory
+namespace CRUD_WEB_API.DTOs.Inventory
 {
-    public class SupplierPurchaseOrder
+    public class SupplierPurchaseOrderDto
     {
         public int Id { get; set; }
 
@@ -17,10 +17,10 @@ namespace Shop_Management_WEB_API.Models.Inventory
         public int SupplierId { get; set; }
 
         [Required(ErrorMessage = "Items are required")]
-        public List<SupplierPurchaseOrderItem> Items { get; set; }
+        public List<SupplierPurchaseOrderItemDto> Items { get; set; }
 
         [Required(ErrorMessage = "Total amount is required")]
         [Range(0, double.MaxValue, ErrorMessage = "Total amount must be a positive number")]
-        public decimal TotalAmount => Items.Sum(item => item.Price * item.Quantity);
+        public decimal TotalAmount { get; set; }
     }
 }

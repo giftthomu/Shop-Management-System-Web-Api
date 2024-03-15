@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CRUD_WEB_API.DTOs.Inventory;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop_Management_WEB_API.DTOs.Inventory;
 using Shop_Management_WEB_API.DTOs.Users;
@@ -13,6 +15,12 @@ namespace Shop_Management_WEB_API.Common
         {
             CreateMap<Product, ProductDto>();
             CreateMap<Users, UserDto>();
+            CreateMap<Supplier, SupplierDto>();
+        }
+
+        internal ActionResult<IEnumerable<SupplierDto>> Map<T>(Supplier? suppliers)
+        {
+            throw new NotImplementedException();
         }
     }
 }
