@@ -16,6 +16,10 @@ namespace Shop_Management_WEB_API.Common
             CreateMap<Product, ProductDto>();
             CreateMap<Users, UserDto>();
             CreateMap<Supplier, SupplierDto>();
+            CreateMap<SupplierPurchaseOrder, SupplierPurchaseOrderDto>();
+            CreateMap<SupplierPurchaseOrderItem, SupplierPurchaseOrderItemDto>();   
+         
+
         }
 
   

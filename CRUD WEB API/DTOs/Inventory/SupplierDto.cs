@@ -5,6 +5,7 @@ namespace CRUD_WEB_API.DTOs.Inventory
 {
     public class SupplierDto
     {
+        
         public int SupplierId { get; set; }
 
         [Required(ErrorMessage = "Supplier name is required")]
