@@ -1,8 +1,11 @@
-﻿namespace Shop_Management_WEB_API.Models.Inventory
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shop_Management_WEB_API.Models.Inventory
 {
     public class PurchaseOrder
     {
-        public int PurchaseOrderId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         public  DateTime OrderDate { get; set;}
 

@@ -6,6 +6,7 @@ namespace Shop_Management_WEB_API.Models.Inventory
 {
     public class SupplierPurchaseOrder
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Order date is required")]
